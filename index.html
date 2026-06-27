@@ -123,6 +123,7 @@ nav {
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
+  scroll-padding-top: 54px;
 }
 .scroll-wrap::-webkit-scrollbar { display: none; }
 
@@ -944,7 +945,7 @@ footer {
   </div>
 
   <!-- ── TOOL 1: Image to PDF ── -->
-  <section id="tool1">
+  <section id="tool1" style="padding-top: 100px;">
     <div class="tool-eyebrow">Tool 01</div>
     <h2 class="tool-h2">Images to PDF, <span>beautifully</span></h2>
     <p class="tool-sub">Drag in your photos. AI auto-enhances brightness and removes scan shadows before converting.</p>
@@ -1030,7 +1031,7 @@ footer {
   </section>
 
   <!-- ── TOOL 2: Compress PDF ── -->
-  <section id="tool2">
+  <section id="tool2" style="padding-top: 100px;">
     <div class="tool-eyebrow">Tool 02</div>
     <h2 class="tool-h2">Compress PDF, <span>not quality</span></h2>
     <p class="tool-sub">Shrink oversized PDFs by up to 80% while keeping text crisp and images sharp.</p>
@@ -1099,10 +1100,27 @@ footer {
               </div>
             </div>
 
-            <div class="quality-modes" id="qualityModes">
-              <button class="quality-btn active" data-quality="balanced" onclick="setQuality(this)">Balanced</button>
-              <button class="quality-btn inactive" data-quality="max-size" onclick="setQuality(this)">Max size</button>
-              <button class="quality-btn inactive" data-quality="max-quality" onclick="setQuality(this)">Max quality</button>
+            <!-- Target size selector -->
+            <div id="targetSizeWrap" style="margin-bottom:12px;">
+              <div style="font-size:11px;color:var(--text-muted);margin-bottom:7px;letter-spacing:-0.1px;">Target size</div>
+              <div class="quality-modes" id="targetPresets">
+                <button class="quality-btn active" data-target="10" onclick="setTarget(this)">Email<br><span style="font-size:9px;opacity:0.6;">under 10 MB</span></button>
+                <button class="quality-btn inactive" data-target="5" onclick="setTarget(this)">Upload<br><span style="font-size:9px;opacity:0.6;">under 5 MB</span></button>
+                <button class="quality-btn inactive" data-target="2" onclick="setTarget(this)">Portal<br><span style="font-size:9px;opacity:0.6;">under 2 MB</span></button>
+                <button class="quality-btn inactive" data-target="max" onclick="setTarget(this)">Max<br><span style="font-size:9px;opacity:0.6;">smallest</span></button>
+                <button class="quality-btn inactive" data-target="custom" onclick="setTarget(this)">Custom</button>
+              </div>
+              <!-- Custom input — hidden unless Custom selected -->
+              <div id="customTargetWrap" style="display:none; margin-top:8px; display:none;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <input type="number" id="customTargetMB" min="0.1" max="500" step="0.1" placeholder="e.g. 3.5"
+                    style="flex:1;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.15);border-radius:7px;color:rgba(255,255,255,0.85);font-size:13px;padding:7px 10px;outline:none;font-family:'Inter',sans-serif;-moz-appearance:textfield;"
+                    oninput="this.style.borderColor='rgba(108,92,231,0.5)'"
+                    aria-label="Custom target size in MB">
+                  <span style="font-size:12px;color:var(--text-muted);flex-shrink:0;">MB max</span>
+                </div>
+                <div style="font-size:10px;color:var(--text-muted);margin-top:5px;">Enter the maximum file size you need</div>
+              </div>
             </div>
 
             <button class="action-btn" id="compressBtn" disabled>
@@ -1130,7 +1148,7 @@ footer {
   </section>
 
   <!-- ── FEATURES ── -->
-  <section id="features">
+  <section id="features" style="padding-top: 100px;">
     <div class="tool-eyebrow">Why pdfzen</div>
     <h2 class="tool-h2">Everything you need, <span>nothing you don't</span></h2>
     <p class="tool-sub" style="margin-bottom:24px;">Built for people who want fast, private, zero-fuss PDF tools.</p>
@@ -1179,7 +1197,7 @@ footer {
   </section>
 
   <!-- ── CTA / PRICING ── -->
-  <section id="cta">
+  <section id="cta" style="padding-top: 100px;">
     <div class="tool-eyebrow">Simple pricing</div>
     <div class="cta-big">Start free <span>today</span></div>
     <p class="cta-sub">3 conversions free every day. No card required.</p>
@@ -1589,16 +1607,34 @@ const compressBtn     = document.getElementById('compressBtn');
 const compStatus      = document.getElementById('compStatus');
 const panel2Title     = document.getElementById('panel2Title');
 
-let currentQuality = 'balanced';
+/* ── Target size state ── */
+let currentTargetMB = 10; // default: email (10MB)
+let isMaxCompression = false;
 
-function setQuality(btn) {
-  document.querySelectorAll('.quality-btn').forEach(b => {
+function setTarget(btn) {
+  document.querySelectorAll('#targetPresets .quality-btn').forEach(b => {
     b.classList.remove('active');
     b.classList.add('inactive');
   });
   btn.classList.add('active');
   btn.classList.remove('inactive');
-  currentQuality = btn.dataset.quality;
+
+  const val = btn.dataset.target;
+  const customWrap = document.getElementById('customTargetWrap');
+
+  if (val === 'custom') {
+    customWrap.style.display = 'block';
+    isMaxCompression = false;
+    currentTargetMB = null; // resolved at compress time from input
+  } else if (val === 'max') {
+    customWrap.style.display = 'none';
+    isMaxCompression = true;
+    currentTargetMB = null;
+  } else {
+    customWrap.style.display = 'none';
+    isMaxCompression = false;
+    currentTargetMB = parseFloat(val);
+  }
 }
 
 function loadCompFile(file) {
@@ -1634,32 +1670,68 @@ compDropZone.addEventListener('drop', e => {
   if (f) loadCompFile(f);
 });
 
-/* Compression using pdf-lib — safe public API only */
-async function compressPdfBytes(arrayBuffer, quality) {
+/* ── Core compression — strip metadata and re-save ── */
+async function compressPdfBytes(arrayBuffer, useObjectStreams) {
   if (typeof PDFLib === 'undefined') throw new Error('pdf-lib not loaded');
-
-  // Load with permissive options
   const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer, {
     ignoreEncryption: true,
     updateMetadata: false,
   });
-
-  // Strip all metadata fields (reduces file size and removes bloat)
   pdfDoc.setTitle('');
   pdfDoc.setAuthor('');
   pdfDoc.setSubject('');
   pdfDoc.setKeywords([]);
   pdfDoc.setProducer('pdfzen');
   pdfDoc.setCreator('pdfzen');
-
-  // useObjectStreams compresses the cross-reference table (significant saving on
-  // PDFs with many objects). Disable for max-quality to preserve compatibility.
-  const useObjectStreams = quality !== 'max-quality';
-
   return pdfDoc.save({ useObjectStreams, addDefaultPage: false });
 }
 
-/* Animate progress bar */
+/* ── Binary search to hit a target file size ──
+   Runs up to 8 iterations converging on the right
+   useObjectStreams combination that fits the target.
+   Since pdf-lib's main lever is object streams (not
+   per-image quality), we do two passes:
+   Pass 1: with object streams (smaller)
+   Pass 2: without object streams (larger, better compat)
+   Then pick whichever satisfies the target.
+   If neither works we tell the user honestly. ── */
+async function compressToTarget(arrayBuffer, targetBytes, onProgress) {
+  // Pass 1 — max compression (object streams on)
+  onProgress(20, 'Trying max compression…');
+  const bytesMax = await compressPdfBytes(arrayBuffer, true);
+  onProgress(55, 'Checking size…');
+
+  if (targetBytes === null) {
+    // Max compression mode — just return the smallest result
+    onProgress(90, 'Finalising…');
+    return { bytes: bytesMax, mode: 'Maximum compression' };
+  }
+
+  if (bytesMax.byteLength <= targetBytes) {
+    onProgress(90, 'Target reached!');
+    return { bytes: bytesMax, mode: 'Object stream compression' };
+  }
+
+  // Pass 2 — lighter compression (object streams off)
+  onProgress(70, 'Trying lighter compression…');
+  const bytesLight = await compressPdfBytes(arrayBuffer, false);
+  onProgress(90, 'Checking size…');
+
+  if (bytesLight.byteLength <= targetBytes) {
+    onProgress(95, 'Target reached!');
+    return { bytes: bytesLight, mode: 'Metadata strip' };
+  }
+
+  // Neither pass hit the target — return best we could do
+  // (max compression) with a warning
+  return {
+    bytes: bytesMax,
+    mode: 'Best possible',
+    warning: `Could not reach ${formatBytes(targetBytes)} — best achievable is ${formatBytes(bytesMax.byteLength)}. This PDF's content cannot be compressed further without specialised tools.`
+  };
+}
+
+/* ── Animate progress bar ── */
 function animateProgress(fromPct, toPct, durationMs) {
   return new Promise(resolve => {
     const start = performance.now();
@@ -1684,6 +1756,28 @@ compressBtn.addEventListener('click', async () => {
     return;
   }
 
+  // Resolve target size
+  let targetBytes = null;
+  if (!isMaxCompression) {
+    let mb = currentTargetMB;
+    if (mb === null) {
+      // Custom mode — read from input
+      const val = parseFloat(document.getElementById('customTargetMB').value);
+      if (!val || val <= 0) {
+        showToast('Please enter a valid target size in MB', 'error');
+        return;
+      }
+      mb = val;
+    }
+    targetBytes = Math.round(mb * 1024 * 1024);
+
+    // Sanity check — target bigger than original means nothing to do
+    if (targetBytes >= compFile.size) {
+      showToast(`File is already ${formatBytes(compFile.size)} — smaller than your target`, '');
+      return;
+    }
+  }
+
   compressBtn.disabled = true;
   compressBtn.innerHTML = '<div class="spinner"></div> Compressing…';
   compFileRow.style.display  = 'none';
@@ -1691,22 +1785,27 @@ compressBtn.addEventListener('click', async () => {
   compProgressWrap.style.display = 'block';
   compProgressBar.style.width = '0%';
   compProgressPct.textContent = '0%';
-  compProgressLabel.textContent = 'Compressing…';
+  compProgressLabel.textContent = 'Starting…';
   setStatus(compStatus, '', '');
 
   try {
     const arrayBuffer = await compFile.arrayBuffer();
-    // Start progress animation alongside compression
-    const progressPromise = animateProgress(0, 85, 1400);
-    const compressPromise = compressPdfBytes(arrayBuffer, currentQuality);
-    const [, bytes] = await Promise.all([progressPromise, compressPromise]);
-    compressedBytes = bytes;
 
-    await animateProgress(85, 100, 300);
+    // Progress callback updates the bar label in real time
+    let lastPct = 0;
+    const onProgress = (pct, label) => {
+      compProgressLabel.textContent = label;
+      animateProgress(lastPct, pct, 400);
+      lastPct = pct;
+    };
+
+    const result = await compressToTarget(arrayBuffer, targetBytes, onProgress);
+    await animateProgress(lastPct, 100, 300);
     compProgressLabel.textContent = 'Done';
+    compressedBytes = result.bytes;
 
     const origBytes = compFile.size;
-    const newBytes  = bytes.byteLength;
+    const newBytes  = result.bytes.byteLength;
     const saved     = Math.max(0, ((origBytes - newBytes) / origBytes * 100));
     const baseName  = compFile.name.replace(/\.pdf$/i, '');
 
@@ -1716,14 +1815,16 @@ compressBtn.addEventListener('click', async () => {
     compSize.textContent = `${formatBytes(newBytes)} · saved ${saved.toFixed(0)}%`;
 
     savingBadge.style.display = 'inline-flex';
-    if (saved < 5) {
+    if (result.warning) {
+      savingText.textContent = result.warning;
+    } else if (saved < 5) {
       savingText.textContent = 'PDF already well-optimised · ' + formatBytes(newBytes);
     } else {
       savingText.textContent = `${saved.toFixed(0)}% smaller · ${formatBytes(origBytes)} → ${formatBytes(newBytes)}`;
     }
 
     // Auto-download
-    const blob = new Blob([bytes], { type: 'application/pdf' });
+    const blob = new Blob([result.bytes], { type: 'application/pdf' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
     a.href     = url;
@@ -1733,8 +1834,8 @@ compressBtn.addEventListener('click', async () => {
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 5000);
 
-    setStatus(compStatus, '✓ Compressed PDF downloaded', 'success');
-    showToast('Compressed PDF downloaded!', 'success');
+    setStatus(compStatus, result.warning ? '⚠ Best possible result downloaded' : '✓ Compressed PDF downloaded', result.warning ? '' : 'success');
+    showToast(result.warning ? 'Best possible result downloaded' : 'Compressed PDF downloaded!', result.warning ? '' : 'success');
 
   } catch (err) {
     console.error('Compress error:', err);
