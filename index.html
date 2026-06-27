@@ -1109,6 +1109,10 @@ footer {
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2h7l4 4v8H3V2z"/><path d="M10 2v4h4"/><path d="M8 11V7M5.5 9.5l2.5 2 2.5-2"/></svg>
               Compress PDF
             </button>
+            <button class="action-btn" id="newFileBtn" style="display:none; margin-top:8px; background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.12);">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2h7l4 4v8H3V2z"/><path d="M10 2v4h4"/><path d="M3 8h5M8 6l2 2-2 2"/></svg>
+              Compress a different file
+            </button>
             <div class="status-msg" id="compStatus" aria-live="polite"></div>
           </div>
 
@@ -1740,7 +1744,23 @@ compressBtn.addEventListener('click', async () => {
   } finally {
     compressBtn.disabled = false;
     compressBtn.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2h7l4 4v8H3V2z"/><path d="M10 2v4h4"/><path d="M8 11V7M5.5 9.5l2.5 2 2.5-2"/></svg> Compress again';
+    document.getElementById('newFileBtn').style.display = 'flex';
   }
+});
+
+/* Reset to drop zone for a new file */
+document.getElementById('newFileBtn').addEventListener('click', () => {
+  compFile = null;
+  compressedBytes = null;
+  compResults.style.display = 'none';
+  compDropZone.style.display = 'block';
+  document.getElementById('newFileBtn').style.display = 'none';
+  compProgressBar.style.width = '0%';
+  compFileRow.style.display = 'none';
+  savingBadge.style.display = 'none';
+  compProgressWrap.style.display = 'none';
+  setStatus(compStatus, '', '');
+  panel2Title.textContent = 'Compress PDF — drop a file to begin';
 });
 
 /* ──────────────────────────────────────────────
