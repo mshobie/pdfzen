@@ -1727,7 +1727,7 @@ async function compressToTarget(arrayBuffer, targetBytes, onProgress) {
   return {
     bytes: bytesMax,
     mode: 'Best possible',
-    warning: `Could not reach ${formatBytes(targetBytes)} — best achievable is ${formatBytes(bytesMax.byteLength)}. This PDF's content cannot be compressed further without specialised tools.`
+    warning: `Best achievable in-browser: ${formatBytes(bytesMax.byteLength)} (target was ${formatBytes(targetBytes)}). Browser tools can't re-encode embedded images — for deeper compression try Ghostscript (free) or Adobe Acrobat.`
   };
 }
 
