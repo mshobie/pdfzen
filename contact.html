@@ -152,7 +152,7 @@ contactForm.addEventListener('submit', async e => {
     const fd = new FormData(contactForm);
     fd.append('type', currentType);
     fd.append('page', window.location.href);
-    const res = await fetch('https://formspree.io/f/xdkojqrk', {
+    const res = await fetch('https://formspree.io/f/mdargvnw', {
       method: 'POST', body: fd, headers: { 'Accept': 'application/json' }
     });
     if (res.ok) {

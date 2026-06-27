@@ -682,13 +682,15 @@ section {
 .feat-card-title { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85); margin-bottom: 4px; letter-spacing: -0.2px; }
 .feat-card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
 
-/* ─── CTA section — snap end so footer scrolls into view ─── */
+/* ─── CTA section — contains footer, allow natural height ─── */
 #cta {
-  scroll-snap-align: end;
+  scroll-snap-align: start;
   overflow: visible;
   height: auto;
   min-height: 100vh;
-  padding-bottom: 0;
+  padding-bottom: 80px;
+  justify-content: flex-start;
+  position: relative;
 }
 .cta-big { font-size: 48px; font-weight: 600; color: var(--white); letter-spacing: -1.8px; margin-bottom: 12px; line-height: 1.1; }
 .cta-big span { color: var(--purple); }
@@ -745,12 +747,16 @@ section {
 footer {
   background: #050505;
   border-top: 0.5px solid var(--border);
-  padding: 24px 32px;
+  padding: 20px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 .footer-logo { font-size: 14px; font-weight: 500; color: var(--text-secondary); letter-spacing: -0.3px; }
 .footer-links { display: flex; gap: 20px; }
@@ -956,6 +962,7 @@ footer {
     <a class="nav-link" href="#tool1">Image to PDF</a>
     <a class="nav-link" href="#tool2">Compress PDF</a>
     <a class="nav-link" href="#cta">Pricing</a>
+    <a class="nav-link" href="about.html">About</a>
   </div>
   <div class="nav-right">
     <span class="nav-signin">Sign in</span>
@@ -1355,18 +1362,18 @@ footer {
     </div>
     <p class="cta-note">Cancel anytime &nbsp;·&nbsp; Secure checkout via Stripe</p>
     <div class="section-num">04</div>
-  </section>
 
-  <!-- Footer (inside scroll) -->
-  <footer>
-    <div class="footer-logo">pdfzen</div>
-    <div class="footer-links">
-      <a class="footer-link" href="privacy.html">Privacy policy</a>
-      <a class="footer-link" href="about.html">About</a>
-      <a class="footer-link" href="contact.html">Contact</a>
-    </div>
-    <div class="footer-copy">© 2026 pdfzen. All rights reserved.</div>
-  </footer>
+    <!-- Footer lives inside CTA section so it's reachable with scroll-snap -->
+    <footer>
+      <div class="footer-logo">pdfzen</div>
+      <div class="footer-links">
+        <a class="footer-link" href="privacy.html">Privacy policy</a>
+        <a class="footer-link" href="about.html">About</a>
+        <a class="footer-link" href="contact.html">Contact</a>
+      </div>
+      <div class="footer-copy">© 2026 pdfzen. All rights reserved.</div>
+    </footer>
+  </section>
 
 </div><!-- end scroll-wrap -->
 
@@ -2060,7 +2067,7 @@ sugForm.addEventListener('submit', async e => {
     const formData = new FormData(sugForm);
     formData.append('type', currentSugType);
     formData.append('page', window.location.href);
-    const res = await fetch('https://formspree.io/f/xdkojqrk', {
+    const res = await fetch('https://formspree.io/f/mdargvnw', {
       method: 'POST',
       body: formData,
       headers: { 'Accept': 'application/json' }
