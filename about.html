@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="About pdfzen — a passion project built to make everyday PDF tasks fast, private, and free.">
+<title>About — pdfzen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #080808; color: #f0eef8; font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+:root {
+  --purple: #6c5ce7; --purple-light: #a89ff5; --purple-dim: rgba(108,92,231,0.15);
+  --purple-border: rgba(108,92,231,0.3); --text-primary: #f0eef8;
+  --text-secondary: rgba(240,238,248,0.55); --text-muted: rgba(240,238,248,0.28);
+  --border: rgba(255,255,255,0.08); --surface: rgba(255,255,255,0.04);
+}
+
+/* Nav */
+nav { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; background: rgba(8,8,8,0.9); backdrop-filter: blur(16px); border-bottom: 0.5px solid var(--border); position: sticky; top: 0; z-index: 100; }
+.nav-logo { display: flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 500; color: #fff; letter-spacing: -0.3px; text-decoration: none; }
+.nav-logo-box { width: 26px; height: 26px; background: var(--purple); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+.nav-logo-box svg { width: 14px; height: 14px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.nav-links { display: flex; gap: 4px; }
+.nav-link { padding: 6px 13px; border-radius: 7px; font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: background 0.15s, color 0.15s; }
+.nav-link:hover { background: rgba(255,255,255,0.07); color: var(--text-primary); }
+.btn-back { padding: 7px 14px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 8px; font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: background 0.15s; display: flex; align-items: center; gap: 6px; }
+.btn-back:hover { background: rgba(255,255,255,0.08); color: var(--text-primary); }
+.btn-back svg { width: 14px; height: 14px; }
+
+/* Page */
+.page { max-width: 640px; margin: 0 auto; padding: 72px 32px 80px; }
+.eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--purple); margin-bottom: 14px; }
+h1 { font-size: 36px; font-weight: 600; line-height: 1.1; color: #fff; letter-spacing: -1.2px; margin-bottom: 20px; }
+h1 span { color: var(--purple); }
+.lead { font-size: 16px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 40px; font-weight: 400; }
+.divider { height: 0.5px; background: var(--border); margin: 36px 0; }
+h2 { font-size: 20px; font-weight: 500; color: #fff; letter-spacing: -0.5px; margin-bottom: 12px; }
+p { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 18px; }
+p:last-child { margin-bottom: 0; }
+.highlight-box {
+  background: var(--purple-dim);
+  border: 0.5px solid var(--purple-border);
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin: 32px 0;
+}
+.highlight-box p { color: rgba(240,238,248,0.75); margin: 0; font-size: 14px; line-height: 1.7; }
+.highlight-box strong { color: #fff; font-weight: 500; }
+.values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0; }
+.value-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 12px; padding: 16px; }
+.value-icon { font-size: 20px; margin-bottom: 8px; }
+.value-title { font-size: 13px; font-weight: 500; color: #fff; margin-bottom: 4px; }
+.value-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.cta-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 36px; }
+.btn-primary { padding: 11px 22px; background: var(--purple); border-radius: 9px; font-size: 14px; font-weight: 500; color: #fff; text-decoration: none; transition: opacity 0.15s; }
+.btn-primary:hover { opacity: 0.88; }
+.btn-ghost { padding: 11px 22px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 9px; font-size: 14px; color: var(--text-secondary); text-decoration: none; transition: background 0.15s; }
+.btn-ghost:hover { background: rgba(255,255,255,0.08); color: var(--text-primary); }
+
+/* Footer */
+footer { border-top: 0.5px solid var(--border); padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.footer-logo { font-size: 14px; font-weight: 500; color: var(--text-secondary); }
+.footer-links { display: flex; gap: 20px; }
+.footer-link { font-size: 12px; color: var(--text-muted); text-decoration: none; transition: color 0.15s; }
+.footer-link:hover { color: var(--text-secondary); }
+.footer-copy { font-size: 11px; color: var(--text-muted); }
+
+/* Floating widget */
+.float-btn { position: fixed; bottom: 28px; left: 28px; z-index: 900; width: 42px; height: 42px; background: rgba(30,28,42,0.92); border: 0.5px solid rgba(255,255,255,0.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(12px); transition: background 0.15s, transform 0.15s; color: rgba(255,255,255,0.55); }
+.float-btn:hover { background: #6c5ce7; border-color: #6c5ce7; color: #fff; transform: scale(1.08); }
+.float-btn svg { width: 18px; height: 18px; }
+.suggestions-overlay { position: fixed; inset: 0; z-index: 950; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; align-items: flex-end; justify-content: flex-start; padding: 0 0 82px 20px; }
+.suggestions-overlay.open { display: flex; }
+.suggestions-panel { background: #141420; border: 0.5px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 22px 22px 18px; width: 320px; max-width: calc(100vw - 40px); box-shadow: 0 20px 60px rgba(0,0,0,0.5); animation: panelIn 0.25s cubic-bezier(0.22,1,0.36,1); }
+@keyframes panelIn { from { opacity:0; transform:translateY(16px) scale(0.97); } to { opacity:1; transform:translateY(0) scale(1); } }
+.sug-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px; }
+.sug-title { font-size: 14px; font-weight: 500; color: #fff; margin: 0; letter-spacing: -0.3px; }
+.sug-close { background: none; border: none; color: rgba(255,255,255,0.35); cursor: pointer; font-size: 18px; line-height: 1; padding: 0; transition: color 0.15s; }
+.sug-close:hover { color: rgba(255,255,255,0.8); }
+.sug-desc { font-size: 12px; color: rgba(255,255,255,0.38); margin: 0 0 14px; line-height: 1.55; }
+.sug-type-row { display: flex; gap: 6px; margin-bottom: 12px; }
+.sug-type-btn { flex: 1; padding: 6px 4px; border-radius: 7px; font-size: 11px; font-weight: 500; cursor: pointer; border: 0.5px solid; font-family: 'Inter', sans-serif; transition: all 0.15s; text-align: center; }
+.sug-type-btn.active { background: rgba(108,92,231,0.2); color: #a89ff5; border-color: rgba(108,92,231,0.3); }
+.sug-type-btn.inactive { color: rgba(255,255,255,0.32); background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); }
+.sug-input, .sug-textarea { width: 100%; background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.1); border-radius: 8px; color: rgba(255,255,255,0.85); font-size: 13px; font-family: 'Inter', sans-serif; padding: 9px 12px; outline: none; transition: border-color 0.15s; box-sizing: border-box; margin-bottom: 8px; resize: none; display: block; }
+.sug-input:focus, .sug-textarea:focus { border-color: rgba(108,92,231,0.5); }
+.sug-textarea { min-height: 80px; line-height: 1.5; }
+.sug-submit { width: 100%; padding: 10px; background: #6c5ce7; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; color: #fff; cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.15s; margin-top: 2px; }
+.sug-submit:hover { opacity: 0.88; }
+.sug-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+.sug-success { text-align: center; padding: 8px 0; display: none; }
+.sug-success-icon { width: 40px; height: 40px; background: rgba(29,158,117,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: #5dcaa5; }
+.sug-success-icon svg { width: 20px; height: 20px; }
+.sug-success p { font-size: 13px; color: rgba(255,255,255,0.65); margin: 0; line-height: 1.55; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-links { display: none; }
+  .page { padding: 48px 20px 64px; }
+  h1 { font-size: 28px; }
+  .values-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; align-items: flex-start; padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <div class="nav-logo-box">
+      <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2h6l3 3v7H2V2z"/><path d="M8 2v3h3"/><path d="M4 7h5M4 9.5h3"/></svg>
+    </div>
+    pdfzen
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html#tool1">Image to PDF</a>
+    <a class="nav-link" href="index.html#tool2">Compress PDF</a>
+  </div>
+  <a class="btn-back" href="index.html">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M8 3L4 7l4 4"/></svg>
+    Back to tools
+  </a>
+</nav>
+
+<main class="page">
+  <div class="eyebrow">About pdfzen</div>
+  <h1>Built out of frustration.<br>Shipped out of <span>passion</span>.</h1>
+  <p class="lead">pdfzen started because I was tired of bloated, slow, ad-cluttered PDF tools that upload your files to someone else's server just to convert a JPEG. So I built something better.</p>
+
+  <div class="highlight-box">
+    <p><strong>This is a passion project.</strong> One person, one goal — give people fast, private, genuinely useful PDF tools without the noise. If pdfzen saves you even 30 seconds today, it's doing its job. If you find it useful, supporting this project helps me keep building. Every new feature I ship is because someone found it worth their time.</p>
+  </div>
+
+  <h2>Why pdfzen exists</h2>
+  <p>The existing tools are either expensive (Adobe Acrobat), cluttered with ads and dark patterns (the big free sites), or they upload your files to servers you don't control. For something as personal as a passport scan, a contract, or a medical document — that's a problem.</p>
+  <p>pdfzen runs entirely in your browser. Your files never leave your device. There's no account required. No tricks. The tool either works or it doesn't — and if it doesn't, I want to know about it.</p>
+
+  <div class="divider"></div>
+
+  <h2>What I believe in</h2>
+  <div class="values-grid">
+    <div class="value-card">
+      <div class="value-icon">🔒</div>
+      <div class="value-title">Privacy by default</div>
+      <div class="value-desc">Files are processed locally. Nothing is uploaded. Not a marketing line — it's literally how the code works.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">⚡</div>
+      <div class="value-title">Speed over features</div>
+      <div class="value-desc">A tool that does one thing fast and well beats one that does everything slowly. Every new feature earns its place.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">🎯</div>
+      <div class="value-title">Utility first</div>
+      <div class="value-desc">No dark patterns, no misleading free trials. Free means free. Paid means genuinely better.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">🛠️</div>
+      <div class="value-title">Built in public</div>
+      <div class="value-desc">pdfzen improves based on real feedback. The suggestions button on every page goes directly to me.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2>What's coming</h2>
+  <p>pdfzen is just getting started. On the roadmap: Merge PDF, Split PDF, Rotate pages, an AI-powered PDF summariser, and OCR to make scanned documents searchable. Each tool gets the same attention to speed and privacy as the first two.</p>
+  <p>If you have a tool you need that isn't here yet — hit the <strong>?</strong> button on any page and tell me. I read every message and build based on what people actually ask for.</p>
+
+  <div class="highlight-box">
+    <p><strong>Want to support pdfzen?</strong> The best things you can do are: use the tools, share the site with someone who needs it, and send feedback. If Pro features ship and they're useful to you, paying for them is the most direct way to keep this project alive and growing. Thank you for being here.</p>
+  </div>
+
+  <div class="cta-row">
+    <a class="btn-primary" href="index.html">Try the tools</a>
+    <a class="btn-ghost" href="contact.html">Get in touch</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-logo">pdfzen</div>
+  <div class="footer-links">
+    <a class="footer-link" href="privacy.html">Privacy policy</a>
+    <a class="footer-link" href="about.html">About</a>
+    <a class="footer-link" href="contact.html">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 pdfzen. All rights reserved.</div>
+</footer>
+
+<!-- Floating suggestions button -->
+<button class="float-btn" id="floatBtn" aria-label="Send feedback or suggestions">
+  <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="7.5"/><path d="M9 6.5a1.5 1.5 0 011.5 1.5c0 1-1.5 1.5-1.5 2.5"/><circle cx="9" cy="13" r="0.6" fill="currentColor" stroke="none"/></svg>
+</button>
+<div class="suggestions-overlay" id="sugOverlay" role="dialog" aria-modal="true">
+  <div class="suggestions-panel">
+    <div class="sug-header"><p class="sug-title">Share feedback</p><button class="sug-close" id="sugClose">×</button></div>
+    <p class="sug-desc">Suggest a feature, report a bug, or just say hi.</p>
+    <div class="sug-type-row">
+      <button class="sug-type-btn active" data-type="suggestion" onclick="setSugType(this)">💡 Suggestion</button>
+      <button class="sug-type-btn inactive" data-type="bug" onclick="setSugType(this)">🐛 Bug report</button>
+      <button class="sug-type-btn inactive" data-type="other" onclick="setSugType(this)">💬 Other</button>
+    </div>
+    <form id="sugForm">
+      <input type="hidden" name="_subject" id="sugSubject" value="pdfzen — Suggestion">
+      <input class="sug-input" type="email" name="email" placeholder="Your email (optional)" autocomplete="email">
+      <textarea class="sug-textarea" name="message" id="sugMessage" placeholder="What's on your mind?" required></textarea>
+      <button class="sug-submit" type="submit" id="sugSubmitBtn">Send feedback</button>
+    </form>
+    <div class="sug-success" id="sugSuccess">
+      <div class="sug-success-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 10l5 5 7-7"/></svg></div>
+      <p>Thanks — message received!<br>We read every single one.</p>
+    </div>
+  </div>
+</div>
+<script>
+const floatBtn=document.getElementById('floatBtn'),sugOverlay=document.getElementById('sugOverlay'),sugClose=document.getElementById('sugClose'),sugForm=document.getElementById('sugForm'),sugSuccess=document.getElementById('sugSuccess'),sugSubmitBtn=document.getElementById('sugSubmitBtn'),sugSubject=document.getElementById('sugSubject');
+let currentSugType='suggestion';
+floatBtn.addEventListener('click',()=>sugOverlay.classList.add('open'));
+sugClose.addEventListener('click',closeSug);
+sugOverlay.addEventListener('click',e=>{if(e.target===sugOverlay)closeSug();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSug();});
+function closeSug(){sugOverlay.classList.remove('open');}
+function setSugType(btn){document.querySelectorAll('.sug-type-btn').forEach(b=>{b.classList.remove('active');b.classList.add('inactive');});btn.classList.add('active');btn.classList.remove('inactive');currentSugType=btn.dataset.type;const labels={suggestion:'pdfzen — Feature suggestion',bug:'pdfzen — Bug report',other:'pdfzen — Feedback'};sugSubject.value=labels[currentSugType]||'pdfzen — Feedback';const ph={suggestion:'What feature would make pdfzen more useful?',bug:'What happened? What were you trying to do?',other:"What's on your mind?"};document.getElementById('sugMessage').placeholder=ph[currentSugType];}
+sugForm.addEventListener('submit',async e=>{e.preventDefault();const msg=document.getElementById('sugMessage').value.trim();if(!msg)return;sugSubmitBtn.disabled=true;sugSubmitBtn.textContent='Sending…';try{const fd=new FormData(sugForm);fd.append('type',currentSugType);fd.append('page',window.location.href);const res=await fetch('https://formspree.io/f/xdkojqrk',{method:'POST',body:fd,headers:{'Accept':'application/json'}});if(res.ok){sugForm.style.display='none';sugSuccess.style.display='block';setTimeout(()=>{closeSug();setTimeout(()=>{sugForm.style.display='block';sugSuccess.style.display='none';sugForm.reset();sugSubmitBtn.disabled=false;sugSubmitBtn.textContent='Send feedback';},400);},2800);}else{throw new Error();}}catch{sugSubmitBtn.disabled=false;sugSubmitBtn.textContent='Send feedback';alert('Could not send — please try again');}});
+</script>
+</body>
+</html>

@@ -682,8 +682,14 @@ section {
 .feat-card-title { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85); margin-bottom: 4px; letter-spacing: -0.2px; }
 .feat-card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
 
-/* ─── CTA Scene ─── */
-#cta { background: #080808; }
+/* ─── CTA section — snap end so footer scrolls into view ─── */
+#cta {
+  scroll-snap-align: end;
+  overflow: visible;
+  height: auto;
+  min-height: 100vh;
+  padding-bottom: 0;
+}
 .cta-big { font-size: 48px; font-weight: 600; color: var(--white); letter-spacing: -1.8px; margin-bottom: 12px; line-height: 1.1; }
 .cta-big span { color: var(--purple); }
 .cta-sub { font-size: 14px; color: var(--text-secondary); margin-bottom: 32px; letter-spacing: -0.1px; }
@@ -849,6 +855,91 @@ footer {
   .panel, .feat-card { transition: none; opacity: 1; transform: none; }
   .pulse-dot, .scroll-chev { animation: none; }
 }
+
+/* ─── Floating suggestions widget ─── */
+.float-btn {
+  position: fixed;
+  bottom: 28px;
+  left: 28px;
+  z-index: 900;
+  width: 42px;
+  height: 42px;
+  background: rgba(30,28,42,0.92);
+  border: 0.5px solid rgba(255,255,255,0.12);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background 0.15s, transform 0.15s, border-color 0.15s;
+  color: rgba(255,255,255,0.55);
+}
+.float-btn:hover { background: #6c5ce7; border-color: #6c5ce7; color: #fff; transform: scale(1.08); }
+.float-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+.suggestions-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: none;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 0 0 82px 20px;
+}
+.suggestions-overlay.open { display: flex; }
+.suggestions-panel {
+  background: #141420;
+  border: 0.5px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 22px 22px 18px;
+  width: 320px;
+  max-width: calc(100vw - 40px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  animation: panelIn 0.25s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes panelIn {
+  from { opacity:0; transform:translateY(16px) scale(0.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+.sug-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px; }
+.sug-title { font-size: 14px; font-weight: 500; color: #fff; margin: 0; letter-spacing: -0.3px; }
+.sug-close { background: none; border: none; color: rgba(255,255,255,0.35); cursor: pointer; font-size: 18px; line-height: 1; padding: 0; transition: color 0.15s; }
+.sug-close:hover { color: rgba(255,255,255,0.8); }
+.sug-desc { font-size: 12px; color: rgba(255,255,255,0.38); margin: 0 0 14px; line-height: 1.55; }
+.sug-type-row { display: flex; gap: 6px; margin-bottom: 12px; }
+.sug-type-btn {
+  flex: 1; padding: 6px 4px; border-radius: 7px; font-size: 11px; font-weight: 500;
+  cursor: pointer; border: 0.5px solid; font-family: 'Inter', sans-serif;
+  transition: all 0.15s; text-align: center;
+}
+.sug-type-btn.active { background: rgba(108,92,231,0.2); color: #a89ff5; border-color: rgba(108,92,231,0.3); }
+.sug-type-btn.inactive { color: rgba(255,255,255,0.32); background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); }
+.sug-input, .sug-textarea {
+  width: 100%; background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.1);
+  border-radius: 8px; color: rgba(255,255,255,0.85); font-size: 13px; font-family: 'Inter', sans-serif;
+  padding: 9px 12px; outline: none; transition: border-color 0.15s; box-sizing: border-box;
+  margin-bottom: 8px; resize: none; display: block;
+}
+.sug-input:focus, .sug-textarea:focus { border-color: rgba(108,92,231,0.5); }
+.sug-textarea { min-height: 80px; line-height: 1.5; }
+.sug-submit {
+  width: 100%; padding: 10px; background: #6c5ce7; border: none; border-radius: 8px;
+  font-size: 13px; font-weight: 500; color: #fff; cursor: pointer;
+  font-family: 'Inter', sans-serif; letter-spacing: -0.2px; transition: opacity 0.15s; margin-top: 2px;
+}
+.sug-submit:hover { opacity: 0.88; }
+.sug-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+.sug-success { text-align: center; padding: 8px 0; display: none; }
+.sug-success-icon {
+  width: 40px; height: 40px; background: rgba(29,158,117,0.15); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: #5dcaa5;
+}
+.sug-success-icon svg { width: 20px; height: 20px; }
+.sug-success p { font-size: 13px; color: rgba(255,255,255,0.65); margin: 0; line-height: 1.55; }
 </style>
 </head>
 <body>
@@ -1270,11 +1361,11 @@ footer {
   <footer>
     <div class="footer-logo">pdfzen</div>
     <div class="footer-links">
-      <a class="footer-link" href="#">Privacy policy</a>
-      <a class="footer-link" href="#">Terms</a>
-      <a class="footer-link" href="#">Contact</a>
+      <a class="footer-link" href="privacy.html">Privacy policy</a>
+      <a class="footer-link" href="about.html">About</a>
+      <a class="footer-link" href="contact.html">Contact</a>
     </div>
-    <div class="footer-copy">© 2025 pdfzen. All rights reserved.</div>
+    <div class="footer-copy">© 2026 pdfzen. All rights reserved.</div>
   </footer>
 
 </div><!-- end scroll-wrap -->
@@ -1880,5 +1971,123 @@ document.addEventListener('keydown', e => {
   }
 });
 </script>
+<!-- ── Floating suggestions button ── -->
+<button class="float-btn" id="floatBtn" aria-label="Send feedback or suggestions">
+  <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="9" cy="9" r="7.5"/>
+    <path d="M9 6.5a1.5 1.5 0 011.5 1.5c0 1-1.5 1.5-1.5 2.5"/>
+    <circle cx="9" cy="13" r="0.6" fill="currentColor" stroke="none"/>
+  </svg>
+</button>
+
+<!-- ── Suggestions overlay panel ── -->
+<div class="suggestions-overlay" id="sugOverlay" role="dialog" aria-modal="true" aria-label="Send feedback">
+  <div class="suggestions-panel" id="sugPanel">
+    <div class="sug-header">
+      <p class="sug-title">Share feedback</p>
+      <button class="sug-close" id="sugClose" aria-label="Close feedback panel">×</button>
+    </div>
+    <p class="sug-desc">Suggest a feature, report a bug, or just say hi. Every message is read.</p>
+
+    <!-- Type selector -->
+    <div class="sug-type-row">
+      <button class="sug-type-btn active" data-type="suggestion" onclick="setSugType(this)">💡 Suggestion</button>
+      <button class="sug-type-btn inactive" data-type="bug" onclick="setSugType(this)">🐛 Bug report</button>
+      <button class="sug-type-btn inactive" data-type="other" onclick="setSugType(this)">💬 Other</button>
+    </div>
+
+    <!-- Form — submits via Formspree, email never exposed in HTML -->
+    <form id="sugForm">
+      <input type="hidden" name="_subject" id="sugSubject" value="pdfzen — Suggestion">
+      <input class="sug-input" type="email" name="email" placeholder="Your email (optional)" autocomplete="email">
+      <textarea class="sug-textarea" name="message" id="sugMessage" placeholder="What's on your mind?" required></textarea>
+      <button class="sug-submit" type="submit" id="sugSubmitBtn">Send feedback</button>
+    </form>
+
+    <!-- Success state -->
+    <div class="sug-success" id="sugSuccess">
+      <div class="sug-success-icon">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 10l5 5 7-7"/></svg>
+      </div>
+      <p>Thanks — message received!<br>We read every single one.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── Suggestions widget ── */
+const floatBtn   = document.getElementById('floatBtn');
+const sugOverlay = document.getElementById('sugOverlay');
+const sugClose   = document.getElementById('sugClose');
+const sugForm    = document.getElementById('sugForm');
+const sugSuccess = document.getElementById('sugSuccess');
+const sugSubmitBtn = document.getElementById('sugSubmitBtn');
+const sugSubject = document.getElementById('sugSubject');
+let currentSugType = 'suggestion';
+
+floatBtn.addEventListener('click', () => sugOverlay.classList.add('open'));
+sugClose.addEventListener('click', closeSug);
+sugOverlay.addEventListener('click', e => { if (e.target === sugOverlay) closeSug(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSug(); });
+
+function closeSug() {
+  sugOverlay.classList.remove('open');
+}
+
+function setSugType(btn) {
+  document.querySelectorAll('.sug-type-btn').forEach(b => {
+    b.classList.remove('active'); b.classList.add('inactive');
+  });
+  btn.classList.add('active'); btn.classList.remove('inactive');
+  currentSugType = btn.dataset.type;
+  const labels = { suggestion: 'pdfzen — Feature suggestion', bug: 'pdfzen — Bug report', other: 'pdfzen — Feedback' };
+  sugSubject.value = labels[currentSugType] || 'pdfzen — Feedback';
+  const placeholders = {
+    suggestion: 'What feature would make pdfzen more useful for you?',
+    bug: 'What happened? What were you trying to do?',
+    other: 'What\'s on your mind?'
+  };
+  document.getElementById('sugMessage').placeholder = placeholders[currentSugType];
+}
+
+sugForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  const msg = document.getElementById('sugMessage').value.trim();
+  if (!msg) return;
+  sugSubmitBtn.disabled = true;
+  sugSubmitBtn.textContent = 'Sending…';
+  try {
+    const formData = new FormData(sugForm);
+    formData.append('type', currentSugType);
+    formData.append('page', window.location.href);
+    const res = await fetch('https://formspree.io/f/xdkojqrk', {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      sugForm.style.display = 'none';
+      sugSuccess.style.display = 'block';
+      setTimeout(() => {
+        closeSug();
+        setTimeout(() => {
+          sugForm.style.display = 'block';
+          sugSuccess.style.display = 'none';
+          sugForm.reset();
+          sugSubmitBtn.disabled = false;
+          sugSubmitBtn.textContent = 'Send feedback';
+        }, 400);
+      }, 2800);
+    } else {
+      throw new Error('server error');
+    }
+  } catch {
+    sugSubmitBtn.disabled = false;
+    sugSubmitBtn.textContent = 'Send feedback';
+    showToast('Could not send — please try again', 'error');
+  }
+});
+</script>
+
 </body>
 </html>
